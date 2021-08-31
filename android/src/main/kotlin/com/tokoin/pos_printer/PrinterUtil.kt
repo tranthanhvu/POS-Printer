@@ -2,6 +2,7 @@ package com.tokoin.pos_printer
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.util.Log
 import com.dantsu.escposprinter.connection.DeviceConnection
 import com.tokoin.pos_printer.bluetooth_printer.AsyncBluetoothEscPosPrint
 import com.tokoin.pos_printer.bluetooth_printer.AsyncEscPosPrinter
@@ -15,7 +16,10 @@ class PrinterUtil {
         }
 
         fun print(context: Context, commands: List<Command>) {
-            AsyncBluetoothEscPosPrint(context).execute(getAsyncEscPosPrinter(null, commands = commands))
+            val printer = getAsyncEscPosPrinter(null, commands = commands);
+            Log.d("PRINTER", printer?.textToPrint ?: "")
+
+            AsyncBluetoothEscPosPrint(context).execute(printer)
         }
 
         private fun getAsyncEscPosPrinter(

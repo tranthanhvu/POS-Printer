@@ -37,29 +37,26 @@ public class AsyncEscPosPrinter extends EscPosPrinterSize {
         for (int i = 0; i < commandList.size(); i++) {
             Command command = commandList.get(i);
             StringBuilder commandStr = new StringBuilder();
-
-            if (command.getBlocks() == null) {
-                continue;
-            }
+            Log.d("PRINTER ttp", command.getBlocks().toString());
 
             for (int j = 0; j < command.getBlocks().size(); j++) {
                 Block block = command.getBlocks().get(j);
                 String blockStr = "";
 
                 switch (block.getType()) {
-                    case text:
+                    case Text:
                         blockStr = textBlockToString(block);
                         break;
 
-                    case image:
+                    case Image:
                         blockStr = imageBlockToString(block);
                         break;
 
-                    case divider:
+                    case Divider:
                         blockStr = dividerBlockToString();
                         break;
 
-                    case linebreak:
+                    case Linebreak:
                         blockStr = "\n";
                         break;
                 }
@@ -70,7 +67,6 @@ public class AsyncEscPosPrinter extends EscPosPrinterSize {
             textToPrint.append(commandStr.toString());
         }
 
-        Log.i("PRINTER", textToPrint.toString());
         return textToPrint.toString();
     }
 
@@ -82,62 +78,62 @@ public class AsyncEscPosPrinter extends EscPosPrinterSize {
         }
 
         switch (block.getFont()) {
-            case small:
+            case Small:
                 blockStr = "<font size='normal'>" + block.getContent() + "</font>";
                 break;
 
-            case medium:
+            case Medium:
                 blockStr = block.getContent();
                 break;
 
-            case tall:
+            case Tall:
                 blockStr = "<font size='tall'>" + block.getContent() + "</font>";
                 break;
 
-            case wide:
+            case Wide:
                 blockStr = "<font size='wide'>" + block.getContent() + "</font>";
                 break;
 
-            case big:
+            case Big:
                 blockStr = "<font size='big'>" + block.getContent() + "</font>";
                 break;
         }
 
 
         switch (block.getFontWeight()) {
-            case bold:
+            case Bold:
                 blockStr = "<b>" + blockStr + "</b>";
                 break;
 
-            case normal:
+            case Normal:
                 break;
         }
 
 
         switch (block.getUnderline()) {
-            case none:
+            case None:
                 break;
 
-            case single:
+            case Single:
                 blockStr = "<u>" + blockStr + "</u>";
                 break;
 
-            case doubleStrike:
+            case DoubleStrike:
                 blockStr = "<u type='double'>" + blockStr + "</u>";
                 break;
         }
 
 
         switch (block.getAlign()) {
-            case left:
+            case Left:
                 blockStr = "[L]" + blockStr;
                 break;
 
-            case right:
+            case Right:
                 blockStr = "[R]" + blockStr;
                 break;
 
-            case center:
+            case Center:
                 blockStr = "[C]" + blockStr;
                 break;
         }
@@ -149,15 +145,15 @@ public class AsyncEscPosPrinter extends EscPosPrinterSize {
         String blockStr = "<img>" + block.getContent() + "</img>";
 
         switch (block.getAlign()) {
-            case left:
+            case Left:
                 blockStr = "[L]" + blockStr;
                 break;
 
-            case right:
+            case Right:
                 blockStr = "[R]" + blockStr;
                 break;
 
-            case center:
+            case Center:
                 blockStr = "[C]" + blockStr;
                 break;
         }

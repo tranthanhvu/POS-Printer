@@ -66,6 +66,7 @@ class Command {
   factory Command.divider() {
     return Command(blocks: [
       Block(type: POSType.divider),
+      Block(type: POSType.linebreak),
     ]);
   }
 }

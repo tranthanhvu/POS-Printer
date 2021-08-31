@@ -1,54 +1,57 @@
 import 'package:json_annotation/json_annotation.dart';
 
 enum POSType {
-  @JsonValue('TEXT')
+  @JsonValue('Text')
   text,
-  @JsonValue('LINEBREAK')
+  @JsonValue('Linebreak')
   linebreak,
-  @JsonValue('DIVIDER')
+  @JsonValue('Divider')
   divider,
-  @JsonValue('IMAGE')
+  @JsonValue('Image')
   image
 }
 enum POSAlign {
-  @JsonValue('LEFT')
+  @JsonValue('Left')
   left,
-  @JsonValue('RIGHT')
+  @JsonValue('Right')
   right,
-  @JsonValue('CENTER')
+  @JsonValue('Center')
   center
 }
 
 enum POSFont {
-  @JsonValue('SMALL')
+  @JsonValue('Small')
   small,
-  @JsonValue('MEDIUM')
+  @JsonValue('Medium')
   medium,
-  @JsonValue('WIDE')
+  @JsonValue('Wide')
   wide,
-  @JsonValue('TALL')
+  @JsonValue('Tall')
   tall,
-  @JsonValue('BIG')
+  @JsonValue('Big')
   big
 }
 
 enum POSFontWeight {
-  @JsonValue('NORMAL')
+  @JsonValue('Normal')
   normal,
-  @JsonValue('BOLD')
+  @JsonValue('Bold')
   bold
 }
 
 enum POSUnderline {
-  @JsonValue('NONE')
+  @JsonValue('None')
   none,
-  @JsonValue('SINGLE')
-  single
+  @JsonValue('Single')
+  single,
+
+  @JsonValue('DoubleStrike')
+  doubleStrike
 }
 
 enum POSWidth {
-  @JsonValue('FULL')
+  @JsonValue('Full')
   full,
-  @JsonValue('HALF')
+  @JsonValue('Half')
   half
 }

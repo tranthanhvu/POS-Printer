@@ -48,9 +48,13 @@ class _MyAppState extends State<MyApp> {
   _onPrintReceipt() async {
     List<Command> commands = [];
 
-    commands.add(Command.text(content: 'content'));
+    commands.add(Command.text(content: 'store name'));
+    commands.add(Command.br());
+    commands.add(Command.text(content: 'address'));
+    commands.add(Command.text(content: 'phone number'));
     commands.add(Command.br());
     commands.add(Command.divider());
+    commands.add(Command.text(content: 'thank you'));
 
     await PosPrinter.print(commands);
   }

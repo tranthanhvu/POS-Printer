@@ -1,39 +1,41 @@
+import java.util.*
+
 inline fun <reified T : Enum<*>> enumValueOrNull(name: String): T? =
-    T::class.java.enumConstants.firstOrNull { it.name == name }
+    T::class.java.enumConstants.firstOrNull { it.name.equals(name, ignoreCase = true) }
 
 enum class POSType {
-    text,
-    linebreak,
-    divider,
-    image
+    Text,
+    Linebreak,
+    Divider,
+    Image
 }
 
 enum class POSAlign {
-    left,
-    right,
-    center
+    Left,
+    Right,
+    Center
 }
 
 enum class POSFont {
-    small,
-    medium,
-    wide,
-    tall,
-    big
+    Small,
+    Medium,
+    Wide,
+    Tall,
+    Big
 }
 
 enum class POSFontWeight {
-    normal,
-    bold
+    Normal,
+    Bold
 }
 
 enum class POSUnderline {
-    none,
-    single,
-    doubleStrike
+    None,
+    Single,
+    DoubleStrike
 }
 
 enum class POSWidth {
-    full,
-    half
+    Full,
+    Half
 }
