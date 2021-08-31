@@ -2,7 +2,6 @@ package com.tokoin.pos_printer
 
 import android.app.Activity
 import android.content.Context
-import android.widget.Toast
 import androidx.annotation.NonNull
 import com.tokoin.pos_printer.model.Command
 
@@ -14,11 +13,6 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import org.json.JSONArray
-import kotlin.coroutines.coroutineContext
-import org.json.JSONObject
-
-
-
 
 /** PosPrinterPlugin */
 class PosPrinterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {

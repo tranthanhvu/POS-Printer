@@ -70,7 +70,7 @@ public class AsyncEscPosPrinter extends EscPosPrinterSize {
             textToPrint.append(commandStr.toString());
         }
 
-        Log.d("pos_printer", textToPrint.toString());
+        Log.i("PRINTER", textToPrint.toString());
         return textToPrint.toString();
     }
 
