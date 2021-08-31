@@ -52,8 +52,17 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Center(
-          child: Text('Running on: $_platformVersion\n'),
-        ),
+            child: Column(
+          children: [
+            // Text('Running on: $_platformVersion\n'),
+            ElevatedButton(
+              onPressed: () async {
+                await PosPrinter.testPrint();
+              },
+              child: Text('test print'),
+            ),
+          ],
+        )),
       ),
     );
   }
