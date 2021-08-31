@@ -10,10 +10,17 @@ class PrinterData {
         data += "$text"
     }
 
-//    fun image(bitmap: Bitmap) {
-//        data += "[C]<img>" + PrinterTextParserImg.bitmapToHexadecimalString(
-//            printer,
-//            bitmap
-//        ) + "</img>\n"
-//    }
+    fun image(imgText: String) {
+        data += "[C]<img>" + imgText + "</img>\n"
+    }
+
+    fun linebreak(num: Int = 1) {
+        for (i: Int in 0..num) {
+            data += "\n";
+        }
+    }
+
+    fun divider() {
+
+    }
 }

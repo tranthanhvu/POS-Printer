@@ -35,12 +35,12 @@ public class AsyncEscPosPrinter extends EscPosPrinterSize {
 
     public void linebreak(int num) {
         for (int i = 0; i < num; i++) {
-            textToPrint +=  "[C]\n";
+            textToPrint +=  "\n";
         }
     }
 
     public void linebreak() {
-        textToPrint +=  "[C]\n";
+        textToPrint +=  "\n";
     }
 
     public void text() {
