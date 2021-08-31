@@ -2,10 +2,14 @@ package com.tokoin.pos_printer.bluetooth_printer;
 
 import com.dantsu.escposprinter.EscPosPrinterSize;
 import com.dantsu.escposprinter.connection.DeviceConnection;
+import com.tokoin.pos_printer.model.Block;
+import com.tokoin.pos_printer.model.Command;
+
+import java.util.List;
 
 public class AsyncEscPosPrinter extends EscPosPrinterSize {
-    private DeviceConnection printerConnection;
-    private String textToPrint = "";
+    private final DeviceConnection printerConnection;
+    private List<Command> commandList;
 
     public AsyncEscPosPrinter(DeviceConnection printerConnection, int printerDpi, float printerWidthMM, int printerNbrCharactersPerLine) {
         super(printerDpi, printerWidthMM, printerNbrCharactersPerLine);
@@ -16,34 +20,151 @@ public class AsyncEscPosPrinter extends EscPosPrinterSize {
         return this.printerConnection;
     }
 
-    public AsyncEscPosPrinter setTextToPrint(String textToPrint) {
-        this.textToPrint = textToPrint;
+    public AsyncEscPosPrinter setCommands(List<Command> commands) {
+        this.commandList = commands;
         return this;
     }
 
     public String getTextToPrint() {
-        return this.textToPrint;
-    }
+        StringBuilder textToPrint = new StringBuilder();
 
-    public void reset() {
-        textToPrint = "";
-    }
+        for (int i = 0; i < commandList.size(); i++) {
+            Command command = commandList.get(i);
+            StringBuilder commandStr = new StringBuilder();
 
-    public void br() {
-        textToPrint += "[C]--------------------------------\n";
-    }
+            if (command.getBlocks() == null) {
+                continue;
+            }
 
-    public void linebreak(int num) {
-        for (int i = 0; i < num; i++) {
-            textToPrint +=  "\n";
+            for (int j = 0; j < command.getBlocks().size(); j++) {
+                Block block = command.getBlocks().get(j);
+                String blockStr = "";
+
+                switch (block.getType()) {
+                    case text:
+                        blockStr = textBlockToString(block);
+                        break;
+
+                    case image:
+                        blockStr = imageBlockToString(block);
+                        break;
+
+                    case divider:
+                        blockStr = dividerBlockToString();
+                        break;
+
+                    case linebreak:
+                        blockStr = "\n";
+                        break;
+                }
+
+                commandStr.append(blockStr);
+            }
+
+            textToPrint.append(commandStr.toString());
         }
+
+        return textToPrint.toString();
     }
 
-    public void linebreak() {
-        textToPrint +=  "\n";
+    private String textBlockToString(Block block) {
+        String blockStr = "";
+
+        if (block.getContent().isEmpty() || block.getContent().equals("\n")) {
+            return  block.getContent();
+        }
+
+        switch (block.getFont()) {
+            case small:
+                blockStr = "<font size='normal'>" + block.getContent() + "</font>";
+                break;
+
+            case medium:
+                blockStr = block.getContent();
+                break;
+
+            case tall:
+                blockStr = "<font size='tall'>" + block.getContent() + "</font>";
+                break;
+
+            case wide:
+                blockStr = "<font size='wide'>" + block.getContent() + "</font>";
+                break;
+
+            case big:
+                blockStr = "<font size='big'>" + block.getContent() + "</font>";
+                break;
+        }
+
+
+        switch (block.getFontWeight()) {
+            case bold:
+                blockStr = "<b>" + blockStr + "</b>";
+                break;
+
+            case normal:
+                break;
+        }
+
+
+        switch (block.getUnderline()) {
+            case none:
+                break;
+
+            case single:
+                blockStr = "<u>" + blockStr + "</u>";
+                break;
+
+            case doubleStrike:
+                blockStr = "<u type='double'>" + blockStr + "</u>";
+                break;
+        }
+
+
+        switch (block.getAlign()) {
+            case left:
+                blockStr = "[L]" + blockStr;
+                break;
+
+            case right:
+                blockStr = "[R]" + blockStr;
+                break;
+
+            case center:
+                blockStr = "[C]" + blockStr;
+                break;
+        }
+
+        return blockStr;
     }
 
-    public void text() {
+    private String imageBlockToString(Block block) {
+        String blockStr = "<img>" + block.getContent() + "</img>";
 
+        switch (block.getAlign()) {
+            case left:
+                blockStr = "[L]" + blockStr;
+                break;
+
+            case right:
+                blockStr = "[R]" + blockStr;
+                break;
+
+            case center:
+                blockStr = "[C]" + blockStr;
+                break;
+        }
+
+        return blockStr;
+    }
+
+    private String dividerBlockToString() {
+        StringBuilder blockStr = new StringBuilder("[C]");
+
+        for (int i = 0; i < printerNbrCharactersPerLine; i++) {
+            blockStr.append("-");
+        }
+
+        return blockStr.toString();
     }
 }

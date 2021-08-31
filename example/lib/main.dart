@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:flutter/services.dart';
+import 'package:pos_printer/model/command.dart';
 import 'package:pos_printer/pos_printer.dart';
 
 void main() {
@@ -44,6 +45,16 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  _onPrintReceipt() async {
+    List<Command> commands = [];
+
+    commands.add(Command.text(content: 'content'));
+    commands.add(Command.br());
+    commands.add(Command.divider());
+
+    await PosPrinter.print(commands);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -53,6 +64,7 @@ class _MyAppState extends State<MyApp> {
         ),
         body: Center(
             child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Text('Running on: $_platformVersion\n'),
             ElevatedButton(
@@ -60,6 +72,11 @@ class _MyAppState extends State<MyApp> {
                 await PosPrinter.testPrint();
               },
               child: Text('test print'),
+            ),
+            const SizedBox(height: 32),
+            ElevatedButton(
+              onPressed: _onPrintReceipt,
+              child: Text('print receipt'),
             ),
           ],
         )),

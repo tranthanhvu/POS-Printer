@@ -5,28 +5,27 @@ import android.graphics.Bitmap
 import com.dantsu.escposprinter.connection.DeviceConnection
 import com.tokoin.pos_printer.bluetooth_printer.AsyncBluetoothEscPosPrint
 import com.tokoin.pos_printer.bluetooth_printer.AsyncEscPosPrinter
+import com.tokoin.pos_printer.model.Command
 
 class PrinterUtil {
     companion object {
         fun testPrint(context: Context) {
-            AsyncBluetoothEscPosPrint(context).execute(getAsyncEscPosPrinter(null))
+            val command = Command("[{'content': 'RECEIPT'}]")
+            AsyncBluetoothEscPosPrint(context).execute(getAsyncEscPosPrinter(null, commands = listOf(command)))
         }
 
-//        fun print(bitmap: Bitmap? = null) {
-//            // if (SunmiPrintHelper.getInstance().sunmiPrinter == SunmiPrintHelper.FoundSunmiPrinter) {
-//            //     SunmiPrintHelper.getInstance().printTicket(receipt!!, saleInfo!!, bitmap)
-//            // } else {
-//            AsyncBluetoothEscPosPrint(context).execute(getAsyncEscPosPrinter(null, bitmap = bitmap))
-//            // }
-//        }
+        fun print(context: Context, commands: List<Command>) {
+            AsyncBluetoothEscPosPrint(context).execute(getAsyncEscPosPrinter(null, commands = commands))
+        }
 
         private fun getAsyncEscPosPrinter(
             printerConnection: DeviceConnection?,
-            bitmap: Bitmap? = null
+            commands: List<Command>
         ): AsyncEscPosPrinter? {
             val printer = AsyncEscPosPrinter(printerConnection, 203, 48f, 32)
 
-            return printer.setTextToPrint("RECEIPT")
+            return printer.setCommands(commands)
         }
+
     }
 }
