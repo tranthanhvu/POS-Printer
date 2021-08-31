@@ -38,25 +38,29 @@ class PosPrinterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     }
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
-        if (call.method == "getPlatformVersion") {
-            result.success("Android ${android.os.Build.VERSION.RELEASE}")
-        } else if (call.method == "isSunmiPrinter") {
-            result.success("false")
-        } else if (call.method == "testPrint") {
-            PrinterUtil.testPrint(activity)
-        } else if (call.method == "print") {
-            val json = JSONArray(call.arguments.toString())
-            var commands = ArrayList<Command>();
-            for (i in 0 until json.length()) {
-                val command = Command(json.getJSONObject(i).toString())
-                commands.add(command)
+        when (call.method) {
+            "getPlatformVersion" -> {
+                result.success("Android ${android.os.Build.VERSION.RELEASE}")
             }
+            "isSunmiPrinter" -> {
+                result.success("false")
+            }
+            "testPrint" -> {
+                PrinterUtil.testPrint(activity)
+            }
+            "print" -> {
+                val json = JSONArray(call.arguments.toString())
+                val commands = ArrayList<Command>();
+                for (i in 0 until json.length()) {
+                    val command = Command(json.getJSONObject(i).toString())
+                    commands.add(command)
+                }
 
-            PrinterUtil.print(activity, commands);
-        }
-
-        else {
-            result.notImplemented()
+                PrinterUtil.print(activity, commands);
+            }
+            else -> {
+                result.notImplemented()
+            }
         }
     }
 

@@ -1,5 +1,7 @@
 package com.tokoin.pos_printer.bluetooth_printer;
 
+import android.util.Log;
+
 import com.dantsu.escposprinter.EscPosPrinterSize;
 import com.dantsu.escposprinter.connection.DeviceConnection;
 import com.tokoin.pos_printer.model.Block;
@@ -23,6 +25,10 @@ public class AsyncEscPosPrinter extends EscPosPrinterSize {
     public AsyncEscPosPrinter setCommands(List<Command> commands) {
         this.commandList = commands;
         return this;
+    }
+
+    public List<Command> getCommands() {
+        return this.commandList;
     }
 
     public String getTextToPrint() {
@@ -64,6 +70,7 @@ public class AsyncEscPosPrinter extends EscPosPrinterSize {
             textToPrint.append(commandStr.toString());
         }
 
+        Log.d("pos_printer", textToPrint.toString());
         return textToPrint.toString();
     }
 

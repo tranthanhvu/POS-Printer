@@ -10,7 +10,7 @@ import com.tokoin.pos_printer.model.Command
 class PrinterUtil {
     companion object {
         fun testPrint(context: Context) {
-            val command = Command("[{'content': 'RECEIPT'}]")
+            val command = Command("{'blocks':[{'content': 'RECEIPT'}]}")
             AsyncBluetoothEscPosPrint(context).execute(getAsyncEscPosPrinter(null, commands = listOf(command)))
         }
 
