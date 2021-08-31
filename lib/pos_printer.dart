@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:pos_printer/model/command.dart';
@@ -22,8 +23,9 @@ class PosPrinter {
 
   static Future<bool?> print(List<Command> commands) async {
     try {
-      await _channel.invokeMethod(
-          'print', commands.map((e) => e.toJson()).toList());
+      final json = commands.map((e) => e.toJson()).toList();
+      final jsonString = jsonEncode(json);
+      await _channel.invokeMethod('print', jsonString);
       return true;
     } catch (e) {
       return false;

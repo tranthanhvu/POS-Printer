@@ -15,12 +15,25 @@ class Block {
     this.columnWidth = POSWidth.full,
   });
 
+  @JsonKey(name: 'content')
   String content;
+
+  @JsonKey(name: 'type')
   POSType type;
+
+  @JsonKey(name: 'align')
   POSAlign align;
+
+  @JsonKey(name: 'font')
   POSFont font;
+
+  @JsonKey(name: 'weight')
   POSFontWeight fontWeight;
+
+  @JsonKey(name: 'underline')
   POSUnderline underline;
+
+  @JsonKey(name: 'width')
   POSWidth columnWidth;
 
   factory Block.fromJson(Map<String, dynamic> json) => _$BlockFromJson(json);

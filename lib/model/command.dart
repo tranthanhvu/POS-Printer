@@ -4,12 +4,13 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'command.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Command {
   Command({
     required this.blocks,
   });
 
+  @JsonKey(name: 'blocks')
   List<Block> blocks;
 
   factory Command.fromJson(Map<String, dynamic> json) =>
