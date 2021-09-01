@@ -2,6 +2,8 @@ import Flutter
 import UIKit
 
 public class SwiftPosPrinterPlugin: NSObject, FlutterPlugin {
+    static let bluetoothPrinterManager = BluetoothPrinterManager()
+    
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "pos_printer", binaryMessenger: registrar.messenger())
     let instance = SwiftPosPrinterPlugin()
@@ -9,6 +11,22 @@ public class SwiftPosPrinterPlugin: NSObject, FlutterPlugin {
   }
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-    result("iOS " + UIDevice.current.systemVersion)
+    switch call.method {
+    case "getPlatformVersion":
+        result("iOS " + UIDevice.current.systemVersion)
+    case "isSunmiPrinter":
+        result("false")
+    case "testPrint":
+        PrinterUtil.testPrint()
+    case "print":
+        print(call.arguments ?? "")
+        
+        if let json = call.arguments as? String {
+            PrinterUtil.printReceiptJSON(commandsJSON: json)
+        }
+        
+    default:
+        print("not Implemented")
+    }
   }
 }
