@@ -5,6 +5,7 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:pos_printer/model/command.dart';
+import 'package:pos_printer/model/enum.dart';
 import 'package:pos_printer/pos_printer.dart';
 
 void main() {
@@ -50,15 +51,35 @@ class _MyAppState extends State<MyApp> {
   _onPrintReceipt() async {
     List<Command> commands = [];
 
-    commands.add(Command.text(content: 'store name'));
+    commands.add(Command.text(content: 'store name', align: POSAlign.center));
     commands.add(Command.br());
-    commands.add(Command.text(content: 'address'));
+    commands.add(Command.text(content: 'address', align: POSAlign.center));
     commands.add(Command.kv(key: 'phone number', value: '0123456789'));
     commands.add(Command.br());
     commands.add(Command.divider());
-    commands.add(Command.text(content: 'thank you'));
+    commands.add(Command.text(content: 'thank you', align: POSAlign.center));
 
-    await PosPrinter.print(commands);
+    try {
+      await PosPrinter.print(commands);
+    } catch (e) {
+      final snackbar = SnackBar(content: Text(e.toString()));
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
+    }
+  }
+
+  _onPrintSimpleReceipt() async {
+    List<Command> commands = [];
+
+    commands.add(Command.text(content: 'store name', align: POSAlign.center));
+    commands.add(Command.text(content: 'address', align: POSAlign.center));
+    commands.add(Command.text(content: 'thank you', align: POSAlign.center));
+
+    try {
+      await PosPrinter.print(commands);
+    } catch (e) {
+      final snackbar = SnackBar(content: Text(e.toString()));
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
+    }
   }
 
   _onPrintImage() async {
@@ -73,6 +94,30 @@ class _MyAppState extends State<MyApp> {
     await PosPrinter.print(commands);
   }
 
+  _onPrintKeyValue() async {
+    List<Command> commands = [];
+
+    commands.add(Command.kv(key: 'phone number', value: '0123456789'));
+
+    await PosPrinter.print(commands);
+  }
+
+  _onPrintLinebreak() async {
+    List<Command> commands = [];
+
+    commands.add(Command.br());
+
+    await PosPrinter.print(commands);
+  }
+
+  _onPrintDivider() async {
+    List<Command> commands = [];
+
+    commands.add(Command.divider());
+
+    await PosPrinter.print(commands);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -80,38 +125,71 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: Center(
+        body: Padding(
+            padding: EdgeInsets.all(16),
             child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Text('Running on: $_platformVersion\n'),
-            ElevatedButton(
-              onPressed: () async {
-                await PosPrinter.testPrint();
-              },
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size(double.infinity, 50),
-              ),
-              child: Text('test print'),
-            ),
-            const SizedBox(height: 32),
-            ElevatedButton(
-              onPressed: _onPrintReceipt,
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size(double.infinity, 50),
-              ),
-              child: Text('print receipt'),
-            ),
-            const SizedBox(height: 32),
-            ElevatedButton(
-              onPressed: _onPrintImage,
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size(double.infinity, 50),
-              ),
-              child: Text('print image'),
-            ),
-          ],
-        )),
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // Text('Running on: $_platformVersion\n'),
+                ElevatedButton(
+                  onPressed: () async {
+                    await PosPrinter.testPrint();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(double.infinity, 50),
+                  ),
+                  child: Text('test print'),
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: _onPrintReceipt,
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(double.infinity, 50),
+                  ),
+                  child: Text('print receipt'),
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: _onPrintImage,
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(double.infinity, 50),
+                  ),
+                  child: Text('print image'),
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: _onPrintSimpleReceipt,
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(double.infinity, 50),
+                  ),
+                  child: Text('print simple receipt'),
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: _onPrintKeyValue,
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(double.infinity, 50),
+                  ),
+                  child: Text('print key-value'),
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: _onPrintLinebreak,
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(double.infinity, 50),
+                  ),
+                  child: Text('print linebreak'),
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: _onPrintDivider,
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(double.infinity, 50),
+                  ),
+                  child: Text('print divider'),
+                ),
+              ],
+            )),
       ),
     );
   }
