@@ -42,7 +42,7 @@ class Command {
   }) {
     return Command(blocks: [
       Block(content: key, align: POSAlign.left, columnWidth: POSWidth.half),
-      Block(content: key, align: POSAlign.right, columnWidth: POSWidth.half),
+      Block(content: value, align: POSAlign.right, columnWidth: POSWidth.half),
       Block(type: POSType.linebreak),
     ]);
   }
