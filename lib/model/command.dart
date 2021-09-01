@@ -58,7 +58,7 @@ class Command {
     ]);
   }
 
-  factory Command.br() {
+  factory Command.hr() {
     return Command(blocks: [
       Block(type: POSType.linebreak),
     ]);
