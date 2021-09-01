@@ -39,4 +39,6 @@ android {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.github.DantSu:ESCPOS-ThermalPrinter-Android:2.0.6'
+    implementation 'com.sunmi:printerlibrary:1.0.8'
+    implementation 'com.google.zxing:core:3.4.0'
 }
