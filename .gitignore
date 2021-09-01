@@ -20,8 +20,4 @@ doc/api/
 *.js.deps
 *.js.map
 
-# Avoid committing generated files:
-*.g.dart
-*.gen.dart
-
 tags
