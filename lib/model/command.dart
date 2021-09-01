@@ -51,6 +51,7 @@ class Command {
     return Command(blocks: [
       Block(
         content: imgContent,
+        type: POSType.image,
         align: POSAlign.center,
       ),
       Block(type: POSType.linebreak),

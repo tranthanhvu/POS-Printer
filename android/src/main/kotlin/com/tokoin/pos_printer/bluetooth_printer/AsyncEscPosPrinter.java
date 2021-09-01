@@ -1,9 +1,13 @@
 package com.tokoin.pos_printer.bluetooth_printer;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.util.Log;
 
 import com.dantsu.escposprinter.EscPosPrinterSize;
 import com.dantsu.escposprinter.connection.DeviceConnection;
+import com.dantsu.escposprinter.textparser.PrinterTextParserImg;
 import com.tokoin.pos_printer.model.Block;
 import com.tokoin.pos_printer.model.Command;
 
@@ -37,7 +41,6 @@ public class AsyncEscPosPrinter extends EscPosPrinterSize {
         for (int i = 0; i < commandList.size(); i++) {
             Command command = commandList.get(i);
             StringBuilder commandStr = new StringBuilder();
-            Log.d("PRINTER ttp", command.getBlocks().toString());
 
             for (int j = 0; j < command.getBlocks().size(); j++) {
                 Block block = command.getBlocks().get(j);
@@ -142,7 +145,10 @@ public class AsyncEscPosPrinter extends EscPosPrinterSize {
     }
 
     private String imageBlockToString(Block block) {
-        String blockStr = "<img>" + block.getContent() + "</img>";
+        byte[] bytes = Base64.decode(block.getContent(), Base64.DEFAULT);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        String imgContent = PrinterTextParserImg.bitmapToHexadecimalString(this, bitmap);
+        String blockStr = "<img>" + imgContent + "</img>";
 
         switch (block.getAlign()) {
             case Left:

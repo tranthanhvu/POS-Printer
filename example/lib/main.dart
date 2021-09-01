@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 
@@ -51,10 +53,22 @@ class _MyAppState extends State<MyApp> {
     commands.add(Command.text(content: 'store name'));
     commands.add(Command.br());
     commands.add(Command.text(content: 'address'));
-    commands.add(Command.text(content: 'phone number'));
+    commands.add(Command.kv(key: 'phone number', value: '0123456789'));
     commands.add(Command.br());
     commands.add(Command.divider());
     commands.add(Command.text(content: 'thank you'));
+
+    await PosPrinter.print(commands);
+  }
+
+  _onPrintImage() async {
+    List<Command> commands = [];
+
+    ByteData data = await rootBundle.load("assets/icon_store.png");
+    List<int> imageBytes =
+        data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+    String base64Image = base64Encode(imageBytes);
+    commands.add(Command.image(imgContent: base64Image));
 
     await PosPrinter.print(commands);
   }
@@ -75,12 +89,26 @@ class _MyAppState extends State<MyApp> {
               onPressed: () async {
                 await PosPrinter.testPrint();
               },
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(double.infinity, 50),
+              ),
               child: Text('test print'),
             ),
             const SizedBox(height: 32),
             ElevatedButton(
               onPressed: _onPrintReceipt,
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(double.infinity, 50),
+              ),
               child: Text('print receipt'),
+            ),
+            const SizedBox(height: 32),
+            ElevatedButton(
+              onPressed: _onPrintImage,
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(double.infinity, 50),
+              ),
+              child: Text('print image'),
             ),
           ],
         )),
