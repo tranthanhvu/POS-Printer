@@ -1,6 +1,6 @@
 # pos_printer
 
-A new flutter plugin project.
+POS printer is a plugin for Flutter allowing communicate with thermal printer for both iOS and Android, and support build-in sunmi printer also
 
 ## Getting Started
 

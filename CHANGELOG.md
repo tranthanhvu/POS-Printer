@@ -1,3 +1,4 @@
 ## 0.0.1
 
-* TODO: Describe initial release.
+* print receipt on iOS and Android
+* support build-in Sunmi printer

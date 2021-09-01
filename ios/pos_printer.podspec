@@ -5,13 +5,13 @@
 Pod::Spec.new do |s|
   s.name             = 'pos_printer'
   s.version          = '0.0.1'
-  s.summary          = 'A new flutter plugin project.'
+  s.summary          = 'A flutter plugin for printer.'
   s.description      = <<-DESC
-A new flutter plugin project.
+  A flutter plugin for printer.
                        DESC
   s.homepage         = 'http://example.com'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Your Company' => 'email@example.com' }
+  s.author           = { 'Tokoin' => 'ttvu90@gmail.com' }
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
