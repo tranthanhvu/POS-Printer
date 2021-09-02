@@ -3,6 +3,7 @@ package com.tokoin.pos_printer
 import android.app.Activity
 import android.content.Context
 import androidx.annotation.NonNull
+import com.tokoin.pos_printer.sunmi_printer.SunmiPrintHelper
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
@@ -53,6 +54,7 @@ class PosPrinterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     }
 
     override fun onDetachedFromActivity() {
+        SunmiPrintHelper.getInstance().deInitSunmiPrinterService(activity)
     }
 
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
@@ -60,6 +62,9 @@ class PosPrinterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
         activity = binding.activity
+
+        SunmiPrintHelper.getInstance().initSunmiPrinterService(context)
+        PrinterUtil.checkSunmiPrinter(activity)
     }
 
     override fun onDetachedFromActivityForConfigChanges() {

@@ -10,10 +10,14 @@ import com.dantsu.escposprinter.connection.DeviceConnection;
 import com.dantsu.escposprinter.textparser.PrinterTextParserImg;
 import com.tokoin.pos_printer.model.Block;
 import com.tokoin.pos_printer.model.Command;
+import com.tokoin.pos_printer.sunmi_printer.StringUtils;
 
 import java.util.List;
+import java.util.Locale;
 
 public class AsyncEscPosPrinter extends EscPosPrinterSize {
+    static int POS_PRINTER_CHARACTER_PER_LINE_SMALL = 42;
+
     private final DeviceConnection printerConnection;
     private List<Command> commandList;
 
@@ -75,7 +79,9 @@ public class AsyncEscPosPrinter extends EscPosPrinterSize {
             textToPrint.append(commandStr.toString());
         }
 
-        return textToPrint.toString();
+        String result = textToPrint.toString();
+
+        return result;
     }
 
     private String textBlockToString(Block block) {
@@ -86,17 +92,22 @@ public class AsyncEscPosPrinter extends EscPosPrinterSize {
         }
 
         switch (block.getFont()) {
-            case Small:
-                blockStr = "<font size='normal'>" + block.getContent() + "</font>";
+            case Small: {
+                String content = StringUtils.wordWrap(block.getContent(), POS_PRINTER_CHARACTER_PER_LINE_SMALL, "", Locale.getDefault());
+                blockStr = "<font size='small'>" + content + "</font>";
                 break;
+            }
+            case Medium: {
+                String content = StringUtils.wordWrap(block.getContent(), printerNbrCharactersPerLine, "", Locale.getDefault());
+                blockStr = content;
+                break;
+            }
+            case Tall: {
+                String content = StringUtils.wordWrap(block.getContent(), printerNbrCharactersPerLine, "", Locale.getDefault());
+                blockStr = "<font size='tall'>" + content + "</font>";
+                break;
+            }
 
-            case Medium:
-                blockStr = block.getContent();
-                break;
-
-            case Tall:
-                blockStr = "<font size='tall'>" + block.getContent() + "</font>";
-                break;
 
             case Wide:
                 blockStr = "<font size='wide'>" + block.getContent() + "</font>";

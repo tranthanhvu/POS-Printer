@@ -5,6 +5,11 @@ import 'package:flutter/services.dart';
 import 'package:pos_printer/model/command.dart';
 
 class PosPrinter {
+  static const kPrinterDensity = 384;
+  static const kFontDensityNormal = 12;
+  static const kFontDensitySmall = 9;
+  static const kPrintTextSmallLength = kPrinterDensity / kFontDensitySmall;
+  static const kPrintTextNormalLength = kPrinterDensity / kFontDensityNormal;
   static const MethodChannel _channel = const MethodChannel('pos_printer');
 
   static Future<String?> get platformVersion async {

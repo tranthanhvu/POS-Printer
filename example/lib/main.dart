@@ -52,10 +52,10 @@ class _MyAppState extends State<MyApp> {
     List<Command> commands = [];
 
     commands.add(Command.text(content: 'store name', align: POSAlign.center));
-    commands.add(Command.br());
+    commands.add(Command.hr());
     commands.add(Command.text(content: 'address', align: POSAlign.center));
     commands.add(Command.kv(key: 'phone number', value: '0123456789'));
-    commands.add(Command.br());
+    commands.add(Command.hr());
     commands.add(Command.divider());
     commands.add(Command.text(content: 'thank you', align: POSAlign.center));
 
@@ -105,7 +105,7 @@ class _MyAppState extends State<MyApp> {
   _onPrintLinebreak() async {
     List<Command> commands = [];
 
-    commands.add(Command.br());
+    commands.add(Command.hr());
 
     await PosPrinter.print(commands);
   }
