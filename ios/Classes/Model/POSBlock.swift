@@ -9,7 +9,6 @@ import Foundation
 
 struct POSBlock: Codable {
     let content: String
-    let type: POSType
     let align: POSAlign
     let font: POSFont
     let fontWeight: POSFontWeight
@@ -18,7 +17,6 @@ struct POSBlock: Codable {
     
     enum CodingKeys: String, CodingKey {
         case content
-        case type
         case align
         case font
         case fontWeight = "weight"
@@ -30,7 +28,6 @@ struct POSBlock: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         content = (try? container.decode(String.self, forKey: .content)) ?? ""
-        type = (try? container.decode(POSType.self, forKey: .type)) ?? .text
         align = (try? container.decode(POSAlign.self, forKey: .align)) ?? .left
         font = (try? container.decode(POSFont.self, forKey: .font)) ?? .medium
         fontWeight = (try? container.decode(POSFontWeight.self, forKey: .fontWeight)) ?? .normal

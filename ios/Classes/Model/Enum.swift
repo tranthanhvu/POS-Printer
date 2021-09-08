@@ -7,8 +7,9 @@
 
 import Foundation
 
-enum POSType: String, Codable {
+enum POSCommandType: String, Codable {
     case text = "Text"
+    case keyValue = "KeyValue"
     case linebreak = "Linebreak"
     case divider = "Divider"
     case image = "Image"
