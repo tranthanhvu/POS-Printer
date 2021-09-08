@@ -64,17 +64,14 @@ public class AsyncEscPosPrinter extends EscPosPrinterSize {
                         break;
 
                     case Linebreak:
-                        if (commandStr.length() == 0) {
-                            blockStr = "[L]\n";
-                        } else {
-                            blockStr = "\n";
-                        }
-
+                        blockStr = "[L]";
                         break;
                 }
 
                 commandStr.append(blockStr);
             }
+
+            commandStr.append("\n");
 
             textToPrint.append(commandStr.toString());
         }

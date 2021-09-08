@@ -7,7 +7,6 @@ part 'block.g.dart';
 class Block {
   Block({
     this.content = '',
-    this.type = POSType.text,
     this.align = POSAlign.left,
     this.font = POSFont.medium,
     this.fontWeight = POSFontWeight.normal,
@@ -17,9 +16,6 @@ class Block {
 
   @JsonKey(name: 'content')
   String content;
-
-  @JsonKey(name: 'type')
-  POSType type;
 
   @JsonKey(name: 'align')
   POSAlign align;

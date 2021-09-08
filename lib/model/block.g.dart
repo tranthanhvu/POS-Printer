@@ -9,7 +9,6 @@ part of 'block.dart';
 Block _$BlockFromJson(Map<String, dynamic> json) {
   return Block(
     content: json['content'] as String,
-    type: _$enumDecode(_$POSTypeEnumMap, json['type']),
     align: _$enumDecode(_$POSAlignEnumMap, json['align']),
     font: _$enumDecode(_$POSFontEnumMap, json['font']),
     fontWeight: _$enumDecode(_$POSFontWeightEnumMap, json['weight']),
@@ -20,7 +19,6 @@ Block _$BlockFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$BlockToJson(Block instance) => <String, dynamic>{
       'content': instance.content,
-      'type': _$POSTypeEnumMap[instance.type],
       'align': _$POSAlignEnumMap[instance.align],
       'font': _$POSFontEnumMap[instance.font],
       'weight': _$POSFontWeightEnumMap[instance.fontWeight],
@@ -53,13 +51,6 @@ K _$enumDecode<K, V>(
     },
   ).key;
 }
-
-const _$POSTypeEnumMap = {
-  POSType.text: 'Text',
-  POSType.linebreak: 'Linebreak',
-  POSType.divider: 'Divider',
-  POSType.image: 'Image',
-};
 
 const _$POSAlignEnumMap = {
   POSAlign.left: 'Left',

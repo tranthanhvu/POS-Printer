@@ -1,8 +1,10 @@
 import 'package:json_annotation/json_annotation.dart';
 
-enum POSType {
+enum POSCommandType {
   @JsonValue('Text')
   text,
+  @JsonValue('KeyValue')
+  keyValue,
   @JsonValue('Linebreak')
   linebreak,
   @JsonValue('Divider')
