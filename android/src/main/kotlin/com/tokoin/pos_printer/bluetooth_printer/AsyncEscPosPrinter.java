@@ -46,32 +46,38 @@ public class AsyncEscPosPrinter extends EscPosPrinterSize {
             Command command = commandList.get(i);
             StringBuilder commandStr = new StringBuilder();
 
-            for (int j = 0; j < command.getBlocks().size(); j++) {
-                Block block = command.getBlocks().get(j);
-                String blockStr = "";
+            switch (command.getType()) {
+                case Text:
+                    if (command.getBlocks().size() == 1) {
+                        commandStr.append(textBlockToString(command.getBlocks().get(0)));
+                        commandStr.append("\n");
+                    }
+                    break;
 
-                switch (block.getType()) {
-                    case Text:
-                        blockStr = textBlockToString(block);
-                        break;
+                case KeyValue:
+                    for (int j = 0; j < command.getBlocks().size(); j++) {
+                        Block block = command.getBlocks().get(j);
+                        commandStr.append(textBlockToString(block));
+                    }
+                    commandStr.append("\n");
+                    break;
 
-                    case Image:
-                        blockStr = imageBlockToString(block);
-                        break;
+                case Image:
+                    if (command.getBlocks().size() == 1) {
+                        commandStr.append(imageBlockToString(command.getBlocks().get(0)));
+                        commandStr.append("\n");
+                    }
+                    break;
 
-                    case Divider:
-                        blockStr = dividerBlockToString();
-                        break;
+                case Divider:
+                    commandStr.append(dividerBlockToString());
+                    commandStr.append("\n");
+                    break;
 
-                    case Linebreak:
-                        blockStr = "[L]";
-                        break;
-                }
-
-                commandStr.append(blockStr);
+                case Linebreak:
+                    commandStr.append("[L]\n");
+                    break;
             }
-
-            commandStr.append("\n");
 
             textToPrint.append(commandStr.toString());
         }
