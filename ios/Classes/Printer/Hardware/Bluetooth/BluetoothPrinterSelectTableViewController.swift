@@ -26,7 +26,15 @@ public class BluetoothPrinterSelectTableViewController: UITableViewController {
         
         title = "Printers"
         
+        if let error = printerManager?.startScan() {
+            self.printerManager?.errorReport?(error)
+        }
+        
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Close", style: .done, target: self, action: #selector(dismissVC))
+    }
+    
+    deinit {
+        printerManager?.stopScan()
     }
     
     @objc func dismissVC() {
