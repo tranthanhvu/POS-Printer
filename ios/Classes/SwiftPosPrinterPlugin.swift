@@ -17,7 +17,9 @@ public class SwiftPosPrinterPlugin: NSObject, FlutterPlugin {
     case "isSunmiPrinter":
         result("false")
     case "testPrint":
-        PrinterUtil.testPrint()
+//        PrinterUtil.testPrint()
+//        PrinterUtil.showMessage(title: "Failure", message: "abc")
+        PrinterUtil.showProgressBar()
     case "print":
         print(call.arguments ?? "")
         

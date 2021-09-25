@@ -93,7 +93,37 @@ class PrinterUtil {
         }
         
         if bluetoothPrinterManager.canPrint {
-            bluetoothPrinterManager.print(ticket)
+            bluetoothPrinterManager.print(ticket) { error in
+                if let error = error {
+                    switch error {
+                    case .connectFailed:
+                        showMessage(title: "Broken connection", message: "Unable to connect the printer.")
+                    case .deviceNotReady:
+                        showMessage(title: "Failure", message: "The printer is not ready.")
+                    }
+                    return
+                }
+                
+                showMessage(title: "Success", message: "The ticket is printed!")
+            }
+        }
+    }
+    
+    static func showMessage(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Close", style: .cancel, handler: nil))
+        
+        if let root = UIApplication.shared.keyWindow?.rootViewController {
+            root.present(alert, animated: true)
+        }
+    }
+    
+    static func showProgressBar() {
+        let progressBarVC = ProgressBarViewController()
+        progressBarVC.modalPresentationStyle = .fullScreen
+     
+        if let root = UIApplication.shared.keyWindow?.rootViewController {
+            root.present(progressBarVC, animated: true)
         }
     }
 }
