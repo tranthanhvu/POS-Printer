@@ -14,31 +14,55 @@ class ProgressBarViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.3)
         setUpCircularProgressBarView()
     }
     
     func setUpCircularProgressBarView() {
-        // set view
-        circularProgressBarView = CircularProgressBarView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
-        // align to the center of the screen
-        circularProgressBarView.center = view.center
-        // add this view to the view controller
-        view.addSubview(circularProgressBarView)
+        let blurEffect = UIBlurEffect(style: .light)
+        let bg = UIVisualEffectView(effect: blurEffect)
+        bg.layer.cornerRadius = 8
+        bg.clipsToBounds = true
+        view.addSubview(bg)
         
-        run()
+        bg.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            bg.widthAnchor.constraint(equalToConstant: 120),
+            bg.heightAnchor.constraint(equalToConstant: 120),
+            bg.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            bg.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+        ])
+        
+        // setup progress view
+        circularProgressBarView = CircularProgressBarView(frame: CGRect(x: 0, y: 0, width: 80, height: 80))
+        bg.contentView.addSubview(circularProgressBarView)
+        
+        circularProgressBarView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            circularProgressBarView.widthAnchor.constraint(equalToConstant: 80),
+            circularProgressBarView.heightAnchor.constraint(equalToConstant: 80),
+            circularProgressBarView.centerXAnchor.constraint(equalTo: bg.centerXAnchor),
+            circularProgressBarView.centerYAnchor.constraint(equalTo: bg.centerYAnchor),
+        ])
+        
+//        run()
     }
     
-    func run() {
-        if self.value >= 1 {
-            return
-        }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
-            self.value += 0.1
-            self.circularProgressBarView.setProgress(self.value, animated: true)
-            
-            self.run()
-        }
+//    func run() {
+//        if self.value >= 1 {
+//            return
+//        }
+//
+//        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
+//            self.value += 0.1
+//            self.circularProgressBarView.setProgress(self.value, animated: true)
+//
+//            self.run()
+//        }
+//    }
+    
+    func setProgress(_ progress: CGFloat) {
+        self.circularProgressBarView.setProgress(progress, animated: true)
     }
 }
 
@@ -77,9 +101,9 @@ class CircularProgressBarView: UIView {
         // ui edits
         circleLayer.fillColor = UIColor.clear.cgColor
         circleLayer.lineCap = .round
-        circleLayer.lineWidth = 20.0
+        circleLayer.lineWidth = 16.0
         circleLayer.strokeEnd = 1.0
-        circleLayer.strokeColor = UIColor.white.cgColor
+        circleLayer.strokeColor = UIColor.black.withAlphaComponent(0.1).cgColor
         // added circleLayer to layer
         layer.addSublayer(circleLayer)
         // progressLayer path defined to circularPath
@@ -89,7 +113,7 @@ class CircularProgressBarView: UIView {
         progressLayer.lineCap = .round
         progressLayer.lineWidth = 10.0
         progressLayer.strokeEnd = 0
-        progressLayer.strokeColor = UIColor.green.cgColor
+        progressLayer.strokeColor = UIApplication.shared.keyWindow?.tintColor?.cgColor ?? UIColor.black.cgColor
         // added progressLayer to layer
         layer.addSublayer(progressLayer)
     }

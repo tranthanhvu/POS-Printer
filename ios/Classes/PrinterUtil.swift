@@ -93,7 +93,9 @@ class PrinterUtil {
         }
         
         if bluetoothPrinterManager.canPrint {
-            bluetoothPrinterManager.print(ticket) { error in
+            bluetoothPrinterManager.print(ticket, progressBlock: { progress in
+                print(progress)
+            }, completeBlock: { error in
                 if let error = error {
                     switch error {
                     case .connectFailed:
@@ -105,7 +107,7 @@ class PrinterUtil {
                 }
                 
                 showMessage(title: "Success", message: "The ticket is printed!")
-            }
+            })
         }
     }
     
@@ -120,7 +122,8 @@ class PrinterUtil {
     
     static func showProgressBar() {
         let progressBarVC = ProgressBarViewController()
-        progressBarVC.modalPresentationStyle = .fullScreen
+        progressBarVC.modalPresentationStyle = .overCurrentContext
+        progressBarVC.modalTransitionStyle = .crossDissolve
      
         if let root = UIApplication.shared.keyWindow?.rootViewController {
             root.present(progressBarVC, animated: true)
