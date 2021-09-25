@@ -8,13 +8,24 @@
 import UIKit
 
 class ProgressBarViewController: UIViewController {
+    static var `default`: ProgressBarViewController = { () -> ProgressBarViewController in
+        let progressBarVC = ProgressBarViewController()
+        progressBarVC.modalPresentationStyle = .overCurrentContext
+        progressBarVC.modalTransitionStyle = .crossDissolve
+        
+        return progressBarVC
+    }()
+    
+    
     var circularProgressBarView: CircularProgressBarView!
     var circularViewDuration: TimeInterval = 20
     var value: CGFloat = 0.0
+    var completeBlock: (()->Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.black.withAlphaComponent(0.3)
+        view.isUserInteractionEnabled = false
         setUpCircularProgressBarView()
     }
     
@@ -44,29 +55,21 @@ class ProgressBarViewController: UIViewController {
             circularProgressBarView.centerXAnchor.constraint(equalTo: bg.centerXAnchor),
             circularProgressBarView.centerYAnchor.constraint(equalTo: bg.centerYAnchor),
         ])
-        
-//        run()
     }
     
-//    func run() {
-//        if self.value >= 1 {
-//            return
-//        }
-//
-//        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
-//            self.value += 0.1
-//            self.circularProgressBarView.setProgress(self.value, animated: true)
-//
-//            self.run()
-//        }
-//    }
-    
     func setProgress(_ progress: CGFloat) {
+        if (progress == 0) {
+            if let root = UIApplication.shared.keyWindow?.rootViewController {
+                root.present(self, animated: true)
+            }
+            return
+        }
+        
         self.circularProgressBarView.setProgress(progress, animated: true)
     }
 }
 
-class CircularProgressBarView: UIView {
+class CircularProgressBarView: UIView, CAAnimationDelegate {
     
     // MARK: - Properties -
 
@@ -124,6 +127,7 @@ class CircularProgressBarView: UIView {
         }
         else {
             let stroke = CABasicAnimation(keyPath: "strokeEnd")
+            stroke.delegate = self
             stroke.fromValue = self.progress
             stroke.toValue = progress
             stroke.fillMode = .forwards
@@ -132,20 +136,14 @@ class CircularProgressBarView: UIView {
             self.progressLayer.add(stroke, forKey: nil)
         }
         self.progress = progress
-//
-//        UIView.animate(withDuration: duration) {
-//            self.progressLayer.strokeEnd = toValue
-//        }
-//        progressLayer.removeAllAnimations()
-//
-//        let circularProgressAnimation = CABasicAnimation(keyPath: "strokeEnd")
-//
-//        // set the end time
-//        circularProgressAnimation.duration = duration * (toValue - (circularProgressAnimation.toValue as? Double ?? 0))
-//        circularProgressAnimation.fromValue = progressLayer.strokeEnd
-//        circularProgressAnimation.toValue =  toValue
-//        circularProgressAnimation.fillMode = .forwards
-//        circularProgressAnimation.isRemovedOnCompletion = false
-//        progressLayer.add(circularProgressAnimation, forKey: "progressAnim")
+    }
+    
+    func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
+        if (progress == 1) {
+            ProgressBarViewController.default.dismiss(animated: true) {
+                ProgressBarViewController.default.completeBlock?()
+                ProgressBarViewController.default.completeBlock = nil
+            }
+        }
     }
 }

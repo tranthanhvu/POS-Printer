@@ -31,6 +31,8 @@ class PrinterUtil {
     static func printReceipt(commands: [Command]) {
         let bluetoothPrinterManager = SwiftPosPrinterPlugin.bluetoothPrinterManager
         
+//        testProgress(bluetoothPrinterManager: bluetoothPrinterManager, commands: commands)
+        
         if bluetoothPrinterManager.canPrint {
             printReceipt(bluetoothPrinterManager: bluetoothPrinterManager, commands: commands)
         } else {
@@ -47,6 +49,58 @@ class PrinterUtil {
     
     static private func printReceipt(bluetoothPrinterManager: BluetoothPrinterManager, commands: [Command]) {
         
+        let ticket = PrinterUtil.ticket(from: commands)
+        
+        if bluetoothPrinterManager.canPrint {
+            bluetoothPrinterManager.print(ticket, progressBlock: { progress in
+                ProgressBarViewController.default.setProgress(progress)
+            }, completeBlock: { error in
+                handleError(error)
+            })
+        }
+    }
+    
+    static private func testProgress(bluetoothPrinterManager: BluetoothPrinterManager, commands: [Command]) {
+        
+        let ticket = PrinterUtil.ticket(from: commands)
+        
+        bluetoothPrinterManager.testProgressView(ticket, progressBlock: { progress in
+            ProgressBarViewController.default.setProgress(progress)
+        }, completeBlock: { error in
+            handleError(error)
+        })
+    }
+    
+    static private func handleError(_ error: PError?) {
+        if let error = error {
+            switch error {
+            case .connectFailed:
+                showMessage(title: "Broken connection", message: "Unable to connect the printer.")
+            case .deviceNotReady:
+                showMessage(title: "Failure", message: "The printer is not ready.")
+            }
+            return
+        }
+        
+        if (ProgressBarViewController.default.presentingViewController != nil) {
+            ProgressBarViewController.default.completeBlock = {
+                showMessage(title: "Success", message: "The ticket is printed!")
+            }
+        } else {
+            showMessage(title: "Success", message: "The ticket is printed!")
+        }
+    }
+    
+    static private func showMessage(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Close", style: .cancel, handler: nil))
+        
+        if let root = UIApplication.shared.keyWindow?.rootViewController {
+            root.present(alert, animated: true)
+        }
+    }
+    
+    static private func ticket(from commands: [Command]) -> Ticket {
         var ticket = Ticket()
         ticket.feedLinesOnHead = 1
         
@@ -92,41 +146,6 @@ class PrinterUtil {
             }
         }
         
-        if bluetoothPrinterManager.canPrint {
-            bluetoothPrinterManager.print(ticket, progressBlock: { progress in
-                print(progress)
-            }, completeBlock: { error in
-                if let error = error {
-                    switch error {
-                    case .connectFailed:
-                        showMessage(title: "Broken connection", message: "Unable to connect the printer.")
-                    case .deviceNotReady:
-                        showMessage(title: "Failure", message: "The printer is not ready.")
-                    }
-                    return
-                }
-                
-                showMessage(title: "Success", message: "The ticket is printed!")
-            })
-        }
-    }
-    
-    static func showMessage(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Close", style: .cancel, handler: nil))
-        
-        if let root = UIApplication.shared.keyWindow?.rootViewController {
-            root.present(alert, animated: true)
-        }
-    }
-    
-    static func showProgressBar() {
-        let progressBarVC = ProgressBarViewController()
-        progressBarVC.modalPresentationStyle = .overCurrentContext
-        progressBarVC.modalTransitionStyle = .crossDissolve
-     
-        if let root = UIApplication.shared.keyWindow?.rootViewController {
-            root.present(progressBarVC, animated: true)
-        }
+        return ticket
     }
 }

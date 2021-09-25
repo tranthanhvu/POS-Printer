@@ -301,6 +301,17 @@ public class BluetoothPrinterManager {
 
         completeBlock?(nil)
     }
+    
+    public func testProgressView(_ content: ESCPOSCommandsCreator, encoding: String.Encoding = String.GBEncoding.GB_18030_2000, progressBlock: ((CGFloat) -> ())? = nil, completeBlock: ((PError?) -> ())? = nil) {
+
+        progressBlock?(0.0)
+        let data = content.data(using: encoding)
+        for i in 0..<data.count {
+            progressBlock?(CGFloat(i + 1)/CGFloat(data.count))
+        }
+
+        completeBlock?(nil)
+    }
 
     deinit {
         connectTimer?.invalidate()
