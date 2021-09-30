@@ -65,7 +65,9 @@ class ProgressBarViewController: UIViewController {
             return
         }
         
-        self.circularProgressBarView.setProgress(progress, animated: true)
+        DispatchQueue.main.async {
+            self.circularProgressBarView.setProgress(progress, animated: true)
+        }
     }
 }
 

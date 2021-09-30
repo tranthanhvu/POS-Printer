@@ -3,6 +3,7 @@ import UIKit
 
 public class SwiftPosPrinterPlugin: NSObject, FlutterPlugin {
     static let bluetoothPrinterManager = BluetoothPrinterManager()
+    static let progressView = ProgressBarViewController.default;
     
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "pos_printer", binaryMessenger: registrar.messenger())

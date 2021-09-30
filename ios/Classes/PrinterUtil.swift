@@ -32,6 +32,7 @@ class PrinterUtil {
         let bluetoothPrinterManager = SwiftPosPrinterPlugin.bluetoothPrinterManager
         
 //        testProgress(bluetoothPrinterManager: bluetoothPrinterManager, commands: commands)
+//        return
         
         if bluetoothPrinterManager.canPrint {
             printReceipt(bluetoothPrinterManager: bluetoothPrinterManager, commands: commands)
@@ -72,22 +73,24 @@ class PrinterUtil {
     }
     
     static private func handleError(_ error: PError?) {
-        if let error = error {
-            switch error {
-            case .connectFailed:
-                showMessage(title: "Broken connection", message: "Unable to connect the printer.")
-            case .deviceNotReady:
-                showMessage(title: "Failure", message: "The printer is not ready.")
+        DispatchQueue.main.async {
+            if let error = error {
+                switch error {
+                case .connectFailed:
+                    showMessage(title: "Broken connection", message: "Unable to connect the printer.")
+                case .deviceNotReady:
+                    showMessage(title: "Failure", message: "The printer is not ready.")
+                }
+                return
             }
-            return
-        }
-        
-        if (ProgressBarViewController.default.presentingViewController != nil) {
-            ProgressBarViewController.default.completeBlock = {
+            
+            if (ProgressBarViewController.default.presentingViewController != nil) {
+                ProgressBarViewController.default.completeBlock = {
+                    showMessage(title: "Success", message: "The ticket is printed!")
+                }
+            } else {
                 showMessage(title: "Success", message: "The ticket is printed!")
             }
-        } else {
-            showMessage(title: "Success", message: "The ticket is printed!")
         }
     }
     
