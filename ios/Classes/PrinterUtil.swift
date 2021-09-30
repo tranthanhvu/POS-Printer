@@ -31,8 +31,8 @@ class PrinterUtil {
     static func printReceipt(commands: [Command]) {
         let bluetoothPrinterManager = SwiftPosPrinterPlugin.bluetoothPrinterManager
         
-//        testProgress(bluetoothPrinterManager: bluetoothPrinterManager, commands: commands)
-//        return
+        testProgress(bluetoothPrinterManager: bluetoothPrinterManager, commands: commands)
+        return
         
         if bluetoothPrinterManager.canPrint {
             printReceipt(bluetoothPrinterManager: bluetoothPrinterManager, commands: commands)
@@ -53,11 +53,15 @@ class PrinterUtil {
         let ticket = PrinterUtil.ticket(from: commands)
         
         if bluetoothPrinterManager.canPrint {
-            bluetoothPrinterManager.print(ticket, progressBlock: { progress in
-                ProgressBarViewController.default.setProgress(progress)
-            }, completeBlock: { error in
-                handleError(error)
-            })
+            bluetoothPrinterManager.print(
+                ticket,
+//                progressBlock: { progress in
+//                    ProgressBarViewController.default.setProgress(progress)
+//                },
+                completeBlock: { error in
+                    handleError(error)
+                }
+            )
         }
     }
     
@@ -65,11 +69,15 @@ class PrinterUtil {
         
         let ticket = PrinterUtil.ticket(from: commands)
         
-        bluetoothPrinterManager.testProgressView(ticket, progressBlock: { progress in
-            ProgressBarViewController.default.setProgress(progress)
-        }, completeBlock: { error in
-            handleError(error)
-        })
+        bluetoothPrinterManager.testProgressView(
+            ticket,
+//            progressBlock: { progress in
+//                ProgressBarViewController.default.setProgress(progress)
+//            },
+            completeBlock: { error in
+                handleError(error)
+            }
+        )
     }
     
     static private func handleError(_ error: PError?) {
@@ -84,13 +92,13 @@ class PrinterUtil {
                 return
             }
             
-            if (ProgressBarViewController.default.presentingViewController != nil) {
-                ProgressBarViewController.default.completeBlock = {
-                    showMessage(title: "Success", message: "The ticket is printed!")
-                }
-            } else {
+//            if (ProgressBarViewController.default.presentingViewController != nil) {
+//                ProgressBarViewController.default.completeBlock = {
+//                    showMessage(title: "Success", message: "The ticket is printed!")
+//                }
+//            } else {
                 showMessage(title: "Success", message: "The ticket is printed!")
-            }
+//            }
         }
     }
     

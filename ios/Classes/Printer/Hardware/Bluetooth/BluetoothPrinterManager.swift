@@ -297,7 +297,7 @@ public class BluetoothPrinterManager {
             progressBlock?(CGFloat((i + 1)/data.count))
         }
         
-        progressBlock?(1.0)
+//        progressBlock?(1.0)
 
         completeBlock?(nil)
     }
@@ -309,7 +309,7 @@ public class BluetoothPrinterManager {
         for i in 0..<data.count {
             progressBlock?(CGFloat(i + 1)/CGFloat(data.count))
         }
-
+        
         completeBlock?(nil)
     }
 
