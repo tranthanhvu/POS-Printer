@@ -1,7 +1,5 @@
 package com.tokoin.pos_printer.model
 
-import POSCommandType
-import enumValueOrNull
 import org.json.JSONObject
 
 class Command(json: String): JSONObject(json) {

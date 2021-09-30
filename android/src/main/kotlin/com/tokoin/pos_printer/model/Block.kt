@@ -1,11 +1,5 @@
 package com.tokoin.pos_printer.model
 
-import POSAlign
-import POSFont
-import POSFontWeight
-import POSUnderline
-import POSWidth
-import enumValueOrNull
 import org.json.JSONObject
 
 class Block(json: String): JSONObject(json) {

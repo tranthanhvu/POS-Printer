@@ -1,7 +1,7 @@
-import java.util.*
+package com.tokoin.pos_printer.model
 
 inline fun <reified T : Enum<*>> enumValueOrNull(name: String): T? =
-    T::class.java.enumConstants.firstOrNull { it.name.equals(name, ignoreCase = true) }
+    T::class.java.enumConstants?.firstOrNull { it.name.equals(name, ignoreCase = true) }
 
 enum class POSCommandType {
     Text,

@@ -5,10 +5,8 @@ import android.graphics.BitmapFactory
 import android.os.RemoteException
 import android.util.Base64
 import android.util.Log
-import com.tokoin.pos_printer.model.Block
-import com.tokoin.pos_printer.model.Command
+import com.tokoin.pos_printer.model.*
 import java.util.*
-import kotlin.collections.ArrayList
 
 const val PRINTER_CHARACTER_PER_LINE = 32
 const val SUNMI_PRINTER_CHARACTER_PER_LINE_SMALL = 36
