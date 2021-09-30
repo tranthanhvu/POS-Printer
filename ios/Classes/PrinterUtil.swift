@@ -31,8 +31,8 @@ class PrinterUtil {
     static func printReceipt(commands: [Command]) {
         let bluetoothPrinterManager = SwiftPosPrinterPlugin.bluetoothPrinterManager
         
-        testProgress(bluetoothPrinterManager: bluetoothPrinterManager, commands: commands)
-        return
+//        testProgress(bluetoothPrinterManager: bluetoothPrinterManager, commands: commands)
+//        return
         
         if bluetoothPrinterManager.canPrint {
             printReceipt(bluetoothPrinterManager: bluetoothPrinterManager, commands: commands)
