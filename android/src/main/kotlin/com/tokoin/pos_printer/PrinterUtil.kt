@@ -1,5 +1,6 @@
 package com.tokoin.pos_printer
 
+import android.app.AlertDialog
 import android.content.Context
 import android.util.Log
 import com.tokoin.pos_printer.bluetooth_printer.AsyncBluetoothEscPosPrint
@@ -34,7 +35,7 @@ class PrinterUtil {
 
         private fun print(context: Context, commands: List<Command>) {
             if (isSunmiPrinter()) {
-                SunmiPrintHelper.getInstance().print(commands)
+                SunmiPrintHelper.getInstance().print(context, commands)
             } else {
                 val printer = getAsyncEscPosPrinter(commands = commands)
                 if (printer != null) {

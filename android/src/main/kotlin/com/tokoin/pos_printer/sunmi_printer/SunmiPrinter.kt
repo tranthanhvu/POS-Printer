@@ -1,5 +1,7 @@
 package com.tokoin.pos_printer.sunmi_printer
 
+import android.app.AlertDialog
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.RemoteException
@@ -14,7 +16,7 @@ const val PRINTER_FONT_SIZE_NORMAL = 24f
 const val PRINTER_FONT_SIZE_SMALL = 20f
 const val MAX_IMAGE_WIDTH = 384
 
-fun SunmiPrintHelper.print(commands: List<Command>) {
+fun SunmiPrintHelper.print(context: Context, commands: List<Command>) {
     if (sunmiPrinterService == null) {
         return
     }
@@ -82,7 +84,16 @@ fun SunmiPrintHelper.print(commands: List<Command>) {
 
         sunmiPrinterService.autoOutPaper(null)
 
+        AlertDialog.Builder(context)
+            .setTitle("Success")
+            .setMessage("The ticket is printed!")
+            .show()
+
     } catch (e: RemoteException) {
         Log.d("PRINTER", e.toString())
+        AlertDialog.Builder(context)
+            .setTitle("Error")
+            .setMessage("An error occurred while processing your printing request.")
+            .show()
     }
 }
